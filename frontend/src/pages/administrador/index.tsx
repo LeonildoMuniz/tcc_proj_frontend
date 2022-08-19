@@ -6,6 +6,7 @@ import styles from '../../../styles/home.module.scss'
 import {Input} from '../../components/ui/input'
 import {Button} from '../../components/ui/Button'
 import Link from 'next/link'
+import {toast} from 'react-toastify'
 
 
 const Administrador: NextPage = () => {

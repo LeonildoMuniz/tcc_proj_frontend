@@ -1,12 +1,10 @@
 import {canSSRAuth} from '../../utils/canSSRAuth'
 
 
-
-
-export default function Admin(){
+export default function Mensagem(){
     return(
         <div>
-            <h1>Bem vindo ao Administrador</h1>
+            <h1>Bem vindo ao cadastro</h1>
         </div>
     )
 }

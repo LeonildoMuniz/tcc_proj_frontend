@@ -8,6 +8,8 @@ import {Input} from '../components/ui/input'
 import {Button} from '../components/ui/Button'
 import Link from 'next/link'
 import {AuthContext} from '../contexts/AutorizacaoContextCol'
+import {toast} from 'react-toastify'
+import {canSSRGuest} from '../utils/canSSRGuest'
 
 
 const Home: NextPage = () => {
@@ -22,7 +24,7 @@ const Home: NextPage = () => {
     event.preventDefault();
 
     if(matricula==='' || senha === ''){
-      alert("Informe todos os dados")
+      toast.warning('Digite todos os campos!');
       return;
     }
 
@@ -78,3 +80,9 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps = canSSRGuest(async(ctx)=>{
+  return {
+    props: {}
+  }
+})
