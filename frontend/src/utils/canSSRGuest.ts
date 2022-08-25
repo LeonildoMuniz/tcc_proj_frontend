@@ -13,7 +13,7 @@ export function canSSRGuest<P>(fn: GetServerSideProps<P>){
         if(cookies['@conectar.token']){
             return{
                 redirect:{
-                    destination: '/admin',
+                    destination: '/mensagens',
                     permanent:false,   
                 }
             }

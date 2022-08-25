@@ -56,7 +56,7 @@ export function AuthProvider({children}:AuthProvaderProps){
         //tentar pegar token no cookie
         const {'@conectar.token': token} = parseCookies();
         if(token){
-            api.get('/userinfo').then(response =>{
+            api.get('/userinfo2').then(response =>{
                 const {id, nome, matricula} = response.data;
                 setUser({
                     id,
@@ -73,7 +73,7 @@ export function AuthProvider({children}:AuthProvaderProps){
 
     async function sigIn({matricula,senha}:SignInProps){
        try{
-        const response = await api.post('session3',{
+        const response = await api.post('session',{
             matricula,
             senha
         })
@@ -96,7 +96,7 @@ export function AuthProvider({children}:AuthProvaderProps){
 
         toast.success('Login efetuado com sucesso!')
 
-        Router.push('/mensagens')
+        Router.push('/empresa')
 
        }catch(err){
             toast.error('Erro ao efetuar o login');

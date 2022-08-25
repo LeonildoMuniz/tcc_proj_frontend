@@ -8,9 +8,10 @@
 :root{
   --branco: #FFF;
   --azul: #0caeae;
+  --azul2: #016e6e;;
   --preto: rgb(18, 7, 7);
   --cinza: #efefef;
-  --cinza2: #aeaeae;
+  --cinza2: #8d8888;
 }
 
 button{
@@ -23,7 +24,7 @@ a{
 }
 
 body{
-  background: var(--branco);
+  background: var(--azul2);
 }
 
 body, input, textarea, select, button{
