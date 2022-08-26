@@ -18,7 +18,7 @@ const Administrador: NextPage = () => {
     <div className={styles.containerCenter}>
       <Image src={logo} alt="Logo sistema Conect@r"/>
       <div className={styles.login}>
-        <h1>Administração</h1>
+        <h2>Administração</h2>
         <form>
           <Input
           placeholder="Digite seu login"

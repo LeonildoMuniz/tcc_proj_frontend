@@ -11,36 +11,36 @@ import internal from "stream"
 
 type ItemProps = {
     id: string;
-    empresa: number;
-    desc_empresa: string;
+    estab: number;
+    desc_estab: string;
 }
 
-interface EmpresaProps{
-    empresalist:ItemProps[];
+interface EstabelecimentoProps{
+    estabelecimentolist:ItemProps[];
 }
 
-export default function Unidade({empresalist}:EmpresaProps){
-    const [estab,setEstab] = useState('');
-    const [desc_estab, setDesc] = useState('');
-    const [empresa, setEmpresa] = useState('');
+export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
+    const [c_custo,setCusto] = useState('');
+    const [desc_custo, setDesc] = useState('');
+    const [estabelecimento_id, setEstabelecimento] = useState('');
 
-    const [empresas, setEmpresas] = useState(empresalist || []);
-    const [empresaSelecionada,setSelecionada] = useState(0)
+    const [estabelecimentos, setEstabelecimentos] = useState(estabelecimentolist || []);
+    const [estabSelecionado,setSelecionado] = useState(0)
     
-    const valor = parseInt(estab);
+    const valor = parseInt(c_custo);
 
     async function hadleCadastrar(event:FormEvent) {
         event.preventDefault();
-        if(estab ==='' || desc_estab==='' || empresas[empresaSelecionada].id ===''){
+        if(c_custo ==='' || desc_custo==='' || estabelecimentos[estabSelecionado].desc_estab ===''){
             toast.warning('Digite todos dados para prosseguir!');
             return;
         }
         
         try{
-            const response = await api.post('/estabelecimento',{
-                estab: valor,
-                desc_estab: desc_estab,
-                empresa_id: empresas[empresaSelecionada].id
+            const response = await api.post('/alocacao',{
+                c_custo: valor,
+                desc_custo: desc_custo,
+                estabelecimento_id: estabelecimentos[estabSelecionado].id
             })
         }catch(err){
             toast.error('Erro ao cadastrar: '+err);
@@ -49,12 +49,12 @@ export default function Unidade({empresalist}:EmpresaProps){
 
 
         toast.success('Dados cadastrados com sucesso!')
-        setEmpresa('');
+        setCusto('');
         setDesc('');
-        setEstab('');
+        setEstabelecimento('');
     }
-    function handleEmpresa(event){
-        setSelecionada(event.target.value)
+    function handleCusto(event){
+        setSelecionado(event.target.value)
     }
 
 
@@ -69,28 +69,28 @@ export default function Unidade({empresalist}:EmpresaProps){
         <div>
             <Header/>
             <main className={styles.container}>
-                <h1>Cadastro Unidade</h1>
+                <h1>Cadastro Centro de Custo</h1>
 
                 <form className={styles.form} onSubmit={hadleCadastrar}>
-                    <select className={styles.select} value={empresaSelecionada} onChange={handleEmpresa}>
-                        {empresas.map( (item, index)=> {
+                    <select className={styles.select} value={estabSelecionado} onChange={handleCusto}>
+                        {estabelecimentos.map( (item, index)=> {
                             return(
                                 <option key={item.id} value={index}>
-                                    {item.desc_empresa}
+                                    {item.desc_estab}
                                 </option>
                             )
                         })}
                     </select>
                     <input type="number"
-                    placeholder="Digite o numero do estabelecimento"
+                    placeholder="Digite o numero do centro de custo"
                     className={styles.input}
-                    value={estab}
-                    onChange = {(e)=>setEstab(e.target.value)}
+                    value={c_custo}
+                    onChange = {(e)=>setCusto(e.target.value)}
                      />
                     <input type="text" 
                     placeholder="Digite o nome da unidade"
                     className={styles.input}
-                    value={desc_estab}
+                    value={desc_custo}
                     onChange = {(e)=>setDesc(e.target.value)}
                     />
                     <button className={styles.buttonAdd} type="submit">
@@ -107,10 +107,10 @@ export default function Unidade({empresalist}:EmpresaProps){
 export const getServerSideProps = canSSRAuth (async (ctx)=>{
     const apiCliente = setupAPIClient(ctx);
     
-    const response = await apiCliente.get('/consultaempresa')
+    const response = await apiCliente.get('/consultaestabelecimento')
     return {
         props: {
-            empresalist: response.data
+            estabelecimentolist: response.data
         }
     }
 })

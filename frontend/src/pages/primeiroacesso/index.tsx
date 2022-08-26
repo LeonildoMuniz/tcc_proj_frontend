@@ -51,7 +51,7 @@ const PrimeiroAcesso: NextPage = () => {
     <div className={styles.containerCenter}>
       <Image src={logo} alt="Logo sistema Conect@r"/>
       <div className={styles.login}>
-        <h1>Primeiro Acesso</h1>
+        <h2>Primeiro Acesso</h2>
         <form onSubmit={handleSignUP}>
           <Input
           placeholder="Digite sua matricula"

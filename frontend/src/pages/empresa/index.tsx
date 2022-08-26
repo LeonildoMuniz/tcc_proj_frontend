@@ -46,7 +46,7 @@ export default function Empresa(){
         <div>
             <Header/>
             <main className={styles.container}>
-                <h1>Cadastrar uma empresa</h1>
+                <h1>Cadastro Empresa</h1>
 
                 <form className={styles.form} onSubmit={hadleCadastrar}>
                     <input type="number"

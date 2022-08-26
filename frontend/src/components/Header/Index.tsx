@@ -21,7 +21,7 @@ export function Header(){
                     <Link href="../unidade">
                         <a>Unidade</a>
                     </Link>
-                    <Link href="../centrocusto">
+                    <Link href="../alocacao">
                         <a>Centro de custo</a>
                     </Link>
                     <Link href="../nivel">
