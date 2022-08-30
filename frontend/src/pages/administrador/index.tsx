@@ -1,3 +1,4 @@
+import {useContext, FormEvent, useState} from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -6,37 +7,70 @@ import styles from '../../../styles/home.module.scss'
 import {Input} from '../../components/ui/input'
 import {Button} from '../../components/ui/Button'
 import Link from 'next/link'
+import {AuthContext} from '../../contexts/AutorizacaoContextCol'
 import {toast} from 'react-toastify'
+import {canSSRGuest} from '../../utils/canSSRGuest'
 
 
 const Administrador: NextPage = () => {
+  
+  const {sigIn} = useContext(AuthContext)
+
+  const [matricula, setMatricula] = useState('')
+  const [senha, setSenha] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handlogin(event: FormEvent) {
+    event.preventDefault();
+
+    if(matricula==='' || senha === ''){
+      toast.warning('Digite todos os campos!');
+      return;
+    }
+
+    setLoading(true);
+    let data = {
+      matricula: matricula,
+      senha: senha
+    }
+    await sigIn(data);
+
+    setLoading(false);
+  }
+
+
   return (
     <>
     <Head>
-      <title>Conet@ar - Administrador!</title>
+      <title>Conet@ar - Faça seu login!</title>
     </Head>
     <div className={styles.containerCenter}>
       <Image src={logo} alt="Logo sistema Conect@r"/>
       <div className={styles.login}>
-        <h2>Administração</h2>
-        <form>
+        <form onSubmit={handlogin}>
           <Input
-          placeholder="Digite seu login"
+          placeholder="Digite sua matricula"
+          value={matricula}
+          onChange = {(e) => setMatricula(e.target.value) }
           />
          <Input
-          placeholder="Digite sua senha" 
-          type="password"
+          placeholder="Digite sua senha" type="password"
+          value={senha}
+          onChange = {(e) => setSenha(e.target.value) }
           />
 
           <Button
             type="submit"
-            loading={false}
+            loading={loading}
           >
             Logar
           </Button>
         </form>
+            <Link href="/primeiroacesso">
+              <a className={styles.text}>Primeiro Acesso</a>
+            </Link>
             <Link href="/">
-              <a className={styles.text}>Tela de login</a>
+              <a className={styles.text}>Login</a>
             </Link>
             
       </div>
@@ -46,3 +80,9 @@ const Administrador: NextPage = () => {
 }
 
 export default Administrador
+
+export const getServerSideProps = canSSRGuest(async(ctx)=>{
+  return {
+    props: {}
+  }
+})

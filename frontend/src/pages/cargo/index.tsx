@@ -9,38 +9,40 @@ import {toast} from 'react-toastify'
 import {canSSRAuth} from '../../utils/canSSRAuth'
 
 
+
 type ItemProps = {
     id: string;
-    estab: number;
-    desc_estab: string;
+    desc_nivel: string;
+    controle: number;
 }
 
-interface EstabelecimentoProps{
-    estabelecimentolist:ItemProps[];
+interface NivelProps{
+    nivellist:ItemProps[];
 }
 
-export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
-    const [c_custo,setCusto] = useState('');
-    const [desc_custo, setDesc] = useState('');
-    const [estabelecimento_id, setEstabelecimento] = useState('');
+export default function Cargo({nivellist}:NivelProps){
+    const [descricao,setDesc] = useState('');
+    const [gestor, setGestor] = useState('');
+    const [nivel_id, setNivel] = useState('');
 
-    const [estabelecimentos, setEstabelecimentos] = useState(estabelecimentolist || []);
-    const [estabSelecionado,setSelecionado] = useState(0)
+    const [niveis, setNiveis] = useState(nivellist || []);
+    const [nivelSelecionado,setSelecionado] = useState(0)
     
-    const valor = parseInt(c_custo);
 
     async function hadleCadastrar(event:FormEvent) {
         event.preventDefault();
-        if(c_custo ==='' || desc_custo==='' || estabelecimentos[estabSelecionado].desc_estab ===''){
+        if(descricao ===''){
             toast.warning('Digite todos dados para prosseguir!');
             return;
         }
         
+        alert(gestor)
+
         try{
-            const response = await api.post('/alocacao',{
-                c_custo: valor,
-                desc_custo: desc_custo,
-                estabelecimento_id: estabelecimentos[estabSelecionado].id
+            const response = await api.post('/cargo',{
+                descricao: descricao,
+                gestor: gestor,
+                nivel_id: niveis[nivelSelecionado].id,
             })
         }catch(err){
             toast.error('Erro ao cadastrar: '+err);
@@ -49,9 +51,9 @@ export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
 
 
         toast.success('Dados cadastrados com sucesso!')
-        setCusto('');
         setDesc('');
-        setEstabelecimento('');
+        setGestor('');
+        setNivel('');
     }
     function handleCusto(event){
         setSelecionado(event.target.value)
@@ -62,37 +64,39 @@ export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
  return (
     <>
         <Head>
-            <title>Nova Undiade</title>
+            <title>Novo Cargo</title>
         </Head>
         
 
         <div>
             <Header/>
             <main className={styles.container}>
-                <h1>Cadastro Centro de Custo</h1>
+                <h1>Cadastro Novo Cargo</h1>
 
                 <form className={styles.form} onSubmit={hadleCadastrar}>
-                    <select className={styles.select} value={estabSelecionado} onChange={handleCusto}>
-                        {estabelecimentos.map( (item, index)=> {
+                    <select className={styles.select} value={nivelSelecionado} onChange={handleCusto}>
+                        {niveis.map( (item, index)=> {
                             return(
                                 <option key={item.id} value={index}>
-                                    {item.desc_estab}
+                                    {item.desc_nivel}
                                 </option>
                             )
                         })}
                     </select>
-                    <input type="number"
-                    placeholder="Digite o numero do centro de custo"
+                    <input type="text"
+                    placeholder="Digite a descrição do cargo"
                     className={styles.input}
-                    value={c_custo}
-                    onChange = {(e)=>setCusto(e.target.value)}
-                     />
-                    <input type="text" 
-                    placeholder="Digite o nome da unidade"
-                    className={styles.input}
-                    value={desc_custo}
+                    value={descricao}
                     onChange = {(e)=>setDesc(e.target.value)}
-                    />
+                     />
+                    <fieldset className={styles.fieldset}>
+                            <legend>Selecione a opção abaixo se for gestor</legend>
+                            <div>
+                                <input type="checkbox" className="selecionado"
+                                />
+                                <label> Gestor</label>
+                            </div>
+                    </fieldset>
                     <button className={styles.buttonAdd} type="submit">
                         Cadastrar
                     </button>
@@ -104,13 +108,15 @@ export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
  )
 }
 
+
+
 export const getServerSideProps = canSSRAuth (async (ctx)=>{
     const apiCliente = setupAPIClient(ctx);
     
-    const response = await apiCliente.get('/consultaestabelecimento')
+    const response = await apiCliente.get('/consultanivel')
     return {
         props: {
-            estabelecimentolist: response.data
+            nivellist: response.data
         }
     }
 })

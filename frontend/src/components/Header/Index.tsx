@@ -36,7 +36,7 @@ export function Header(){
                     <Link href="../colaborador">
                         <a>Colaborador</a>
                     </Link>
-                    <Link href="../mensagem">
+                    <Link href="../mensagens">
                         <a>Mensagem</a>
                     </Link>
                     <button onClick={signOut}>
