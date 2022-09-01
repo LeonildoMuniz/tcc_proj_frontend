@@ -22,21 +22,20 @@ export default function Mensagem(){
     
     function handleFile(e: ChangeEvent<HTMLInputElement>){
 
-        console.log(e.target.files);
 
         if(!e.target.files){
             return;
         }
-        const arquivo = e.target.files[0];
+        const image = e.target.files[0];
+        console.log(image)
 
-
-        if(!arquivo){
+        if(!image){
             return;
         }
         setAvatarUrl(URL.createObjectURL(e.target.files[0]))
 
-        if(arquivo.type == 'arquivo/jpeg' || arquivo.type == 'arquivo/png' || arquivo.type == 'arquivo/pdf'){
-            setAvatar(arquivo);
+        if(image.type == 'image/jpeg' || image.type == 'image/png' || image.type == 'application/pdf'){
+            setAvatar(image);
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
         }
 
@@ -46,14 +45,16 @@ export default function Mensagem(){
         e.preventDefault();
         try{
             const data = new FormData();
-            if(!titulo || !mensagem){
+
+            if(!titulo || !mensagem ){
                 toast.warning("Para processegui é preciso preencher os campos titulo e mensagem")
                 return;
             }
             data.append('titulo',titulo);
-            data.append('mensagem',mensagem)
-            data.append('file',imageAvatar )
-            data.append('id_colaborador',user.id)
+            data.append('mensagem',mensagem);
+            data.append('file',imageAvatar);
+            data.append('id_colaborador',user.id);
+
 
             const response = await api.post('/comunicacao',data)
 
@@ -83,7 +84,7 @@ export default function Mensagem(){
                             <span>
                                 <FiUpload size={25} color="var(--azul2)"/>
                             </span>
-                            <input type="file" accept="arquivo/jpeg, arquivo/png, arquivo/pdf" onChange={handleFile}/>
+                            <input type="file" accept="image/jpeg, image/png, application/pdf" onChange={handleFile}/>
                             {avatarUrl &&(
                                 <img 
                                     className={styles.preview}
