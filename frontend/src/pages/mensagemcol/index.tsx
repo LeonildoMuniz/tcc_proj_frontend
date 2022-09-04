@@ -2,24 +2,23 @@
 import {canSSRAuth} from '../../utils/canSSRAuth'
 import {ChangeEvent, FormEvent, useContext, useState} from 'react'
 import Head from 'next/head'
-import {Header} from '../../components/Header/Index'
 import {Footer} from '../../components/Footer/index'
 import styles from './styles.module.scss'
 import {FiUpload} from 'react-icons/fi'
-import Image from 'next/image' 
 import { toast } from 'react-toastify'
 import { AuthContext } from '../../contexts/AutorizacaoContextCol'
 import { api } from '../../services/apiClient'
 import{TbListSearch} from 'react-icons/tb'
 import { setupAPIClient } from '../../services/api'
-import Link from 'next/link'
+import { HeaderCol } from '../../components/HeaderCol'
 
 
 
 
 
 
-export default function Mensagem(){
+
+export default function MensagemCol(){
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setAvatar] = useState(null);
     const [titulo, setTitulo] = useState('');
@@ -64,7 +63,7 @@ export default function Mensagem(){
             data.append('id_colaborador',user.id);
 
 
-            const response = await api.post('/comunicacao',data)
+            const response = await api.post('/comunicacao2',data)
 
             toast.success("Mensagem enviada com sucesso!");
 
@@ -78,17 +77,25 @@ export default function Mensagem(){
         }
 
     }
+    function handleListar(e:FormEvent){
+
+    }
 
     return(
         <>
             <Head>
                 <title>Cadastro de mensagens</title>
             </Head>
-            <Header/>
+            <HeaderCol/>
             <header>
-                <Link href="/listarmensagem">
-                    <a className={styles.text}> <TbListSearch/> Listar Mensagens</a>
-                </Link>
+                <form onSubmit={handleListar}>
+                    <button className={styles.buttonLocalize}>
+                        <span>
+                        <TbListSearch/> Listar Mensagens Enviadas
+                        </span>
+                    </button>
+                </form>
+
             </header>
                 <main className={styles.container} >
                     <h1>Cadastro de mensagens</h1>
@@ -137,7 +144,7 @@ export default function Mensagem(){
 }
 
 export const getServerSideProps = canSSRAuth (async (ctx)=>{
-    
+
     return {
         props: {
         }

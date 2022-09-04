@@ -14,7 +14,7 @@ import {canSSRGuest} from '../utils/canSSRGuest'
 
 const Home: NextPage = () => {
   
-  const {sigIn} = useContext(AuthContext)
+  const {sigInCol} = useContext(AuthContext)
 
   const [matricula, setMatricula] = useState('')
   const [senha, setSenha] = useState('')
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       matricula: matricula,
       senha: senha
     }
-    await sigIn(data);
+    await sigInCol(data);
 
     setLoading(false);
   }

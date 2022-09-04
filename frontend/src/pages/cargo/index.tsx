@@ -22,9 +22,6 @@ interface NivelProps{
 
 export default function Cargo({nivellist}:NivelProps){
     const [descricao,setDesc] = useState('');
-    const [gestor, setGestor] = useState('');
-    const [nivel_id, setNivel] = useState('');
-
     const [niveis, setNiveis] = useState(nivellist || []);
     const [nivelSelecionado,setSelecionado] = useState(0)
     
@@ -35,15 +32,23 @@ export default function Cargo({nivellist}:NivelProps){
             toast.warning('Digite todos dados para prosseguir!');
             return;
         }
-        
-        alert(gestor)
+
 
         try{
-            const response = await api.post('/cargo',{
-                descricao: descricao,
-                gestor: gestor,
-                nivel_id: niveis[nivelSelecionado].id,
-            })
+            if(niveis[nivelSelecionado].controle>1){
+                const response = await api.post('/cargo',{
+                    descricao: descricao,
+                    gestor: true,
+                    nivel_id: niveis[nivelSelecionado].id,
+                })
+            }else{
+                const response = await api.post('/cargo',{
+                    descricao: descricao,
+                    gestor: false,
+                    nivel_id: niveis[nivelSelecionado].id,
+                })
+            }
+
         }catch(err){
             toast.error('Erro ao cadastrar: '+err);
             return;
@@ -52,27 +57,20 @@ export default function Cargo({nivellist}:NivelProps){
 
         toast.success('Dados cadastrados com sucesso!')
         setDesc('');
-        setGestor('');
-        setNivel('');
     }
     function handleCusto(event){
         setSelecionado(event.target.value)
     }
-
-
 
  return (
     <>
         <Head>
             <title>Novo Cargo</title>
         </Head>
-        
-
         <div>
             <Header/>
             <main className={styles.container}>
                 <h1>Cadastro Novo Cargo</h1>
-
                 <form className={styles.form} onSubmit={hadleCadastrar}>
                     <select className={styles.select} value={nivelSelecionado} onChange={handleCusto}>
                         {niveis.map( (item, index)=> {
@@ -89,14 +87,6 @@ export default function Cargo({nivellist}:NivelProps){
                     value={descricao}
                     onChange = {(e)=>setDesc(e.target.value)}
                      />
-                    <fieldset className={styles.fieldset}>
-                            <legend>Selecione a opção abaixo se for gestor</legend>
-                            <div>
-                                <input type="checkbox" className="selecionado"
-                                />
-                                <label> Gestor</label>
-                            </div>
-                    </fieldset>
                     <button className={styles.buttonAdd} type="submit">
                         Cadastrar
                     </button>

@@ -3,12 +3,12 @@ import {destroyCookie,setCookie,parseCookies} from  'nookies'
 import Router from 'next/router'
 import {api} from '../services/apiClient'
 import {toast} from 'react-toastify'
-import { sensitiveHeaders } from 'http2';
 
 type AuthContextData = {
     user: UserProps;
     autenticado: boolean;
     sigIn: (credenciais:SignInProps)=> Promise<void>;
+    sigInCol: (credenciais:SignInProps)=> Promise<void>;
     signOut: ()=>void;
     singUP: (credenciais:SignUpProps)=> Promise<void>;  
 }
@@ -22,6 +22,7 @@ type UserProps = {
     id: string;
     nome: string;
     matricula: string;
+    valor:string;
 }
 
 type AuthProvaderProps = {
@@ -42,6 +43,8 @@ export function signOut(){
     try{
         destroyCookie(undefined,'@conectar.token')
         Router.push('/');
+        destroyCookie(undefined,'@conectar.controle')
+        Router.push('/');
     }catch{
         console.log("Erro ao deslogar")
     }
@@ -51,21 +54,25 @@ export function AuthProvider({children}:AuthProvaderProps){
    
     const [user, setUser] = useState<UserProps>()
     const autenticado = !!user;
+    const [teste, setTeste] = useState<UserProps>();
 
     useEffect(()=>{
         //tentar pegar token no cookie
         const {'@conectar.token': token} = parseCookies();
+        const {'@conectar.controle': valor} = parseCookies();
+
+
         if(token){
-            api.get('/userinfo2').then(response =>{
-                const {id, nome, matricula} = response.data;
+            api.get(`/userinfo${valor}`).then(response =>{
+                const {id, nome, matricula,valor} = response.data;
                 setUser({
                     id,
                     nome,
-                    matricula
+                    matricula,
+                    valor,
                 })
             })
             .catch(()=>{
-                //se der erro deslogar
                 signOut();
             })
         }
@@ -73,13 +80,25 @@ export function AuthProvider({children}:AuthProvaderProps){
 
     async function sigIn({matricula,senha}:SignInProps){
        try{
-        const response = await api.post('session',{
+        const response = await api.post('/session',{
             matricula,
-            senha
+            senha,
         })
         //console.log(response.data);
 
-        const {id, nome, token} = response.data;
+        const {id, nome, token, valor} = response.data;
+
+        setCookie(undefined,'@conectar.controle', valor, {
+            maxAge: 60*60, //expira em uma hora
+            path: "/" //quais locais tem acesso nesse caso todos
+        })
+        setTeste({
+            id,
+            nome,
+            matricula,
+            valor,
+        });
+
 
         setCookie(undefined,'@conectar.token', token, {
             maxAge: 60*60, //expira em uma hora
@@ -88,7 +107,8 @@ export function AuthProvider({children}:AuthProvaderProps){
         setUser({
             id,
             nome,
-            matricula
+            matricula,
+            valor,
         })
 
         //passar para proximas requisiçoes o token
@@ -103,6 +123,54 @@ export function AuthProvider({children}:AuthProvaderProps){
             console.log("Erro ao acessar", err);
        }
     }
+
+    async function sigInCol({matricula,senha}:SignInProps){
+        try{
+         const response = await api.post('/session3',{
+             matricula,
+             senha
+         })
+         //console.log(response.data);
+ 
+         const {id, nome, token, valor} = response.data;
+
+
+         setCookie(undefined,'@conectar.controle', valor, {
+            maxAge: 60*60, //expira em uma hora
+            path: "/" //quais locais tem acesso nesse caso todos
+        })
+        setTeste({
+            id,
+            nome,
+            matricula,
+            valor,
+        });
+
+         setCookie(undefined,'@conectar.token', token, {
+             maxAge: 60*60, //expira em uma hora
+             path: "/" //quais locais tem acesso nesse caso todos
+         })
+         setUser({
+             id,
+             nome,
+             matricula,
+             valor,
+         })
+ 
+         //passar para proximas requisiçoes o token
+         api.defaults.headers['Authorization'] = `Bearer ${token}`
+ 
+         toast.success('Login efetuado com sucesso!')
+ 
+         Router.push('/mensagemcol')
+ 
+        }catch(err){
+             toast.error('Erro ao efetuar o login');
+             console.log("Erro ao acessar", err);
+        }
+     }
+
+
    
     async function singUP({matricula,cpf,admissao,senha}:SignUpProps) {
 
@@ -124,7 +192,7 @@ export function AuthProvider({children}:AuthProvaderProps){
     }
 
     return(
-        <AuthContext.Provider value={ {user,autenticado,sigIn,signOut,singUP} }>
+        <AuthContext.Provider value={ {user,autenticado,sigIn,sigInCol,signOut,singUP} }>
             {children}
         </AuthContext.Provider>
     )

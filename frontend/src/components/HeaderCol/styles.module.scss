@@ -1,0 +1,49 @@
+.headerContainer{
+    height: 5rem;
+    background-color: var(--azul2);
+}
+
+.headerContent{
+    max-width: auto;
+    height: 5rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+        cursor: pointer;
+        justify-content: left;
+    }
+}
+
+.menuNav{
+    display: flex;
+    align-items: center;
+
+    a{
+        color: white;
+        padding: 0 0.5rem;
+        display: inline-block;
+        position: relative;
+        margin-left: 1rem;
+
+        &:hover{
+            background-color: var(--azul);
+            transform: scale(1.2);
+        }
+    }
+
+    button{
+        margin-left: 2rem;
+        background: transparent;
+        background-color: transparent;
+        border: 0;
+        transition: transform 0.5s;
+
+        &:hover{
+            transform: scale(1.6);
+        }
+    }
+}
