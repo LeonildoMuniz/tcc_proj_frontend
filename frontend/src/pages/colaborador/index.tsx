@@ -46,6 +46,8 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
     const [matricula, setMatricula] = useState('');
     const [admissao, setAdmissao] = useState('');
     const [cpf, setCPF] = useState('');
+    const [dt_nasc, setDate] = useState('')
+    const [senha, setSenha] = useState('')
     const [estrutura, setEstrutura] = useState('');
     const [cargo, setCargo] = useState('');
     const [alocacao, setAlocacao] = useState('');
@@ -90,7 +92,8 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
         e.preventDefault();
         try{
             const data = new FormData();
-            if(!nome || !matricula || !admissao || !cpf || !estr || !carg || !aloc){
+            if(!nome || !matricula || !admissao || !cpf || !estr || !carg || !aloc || !dt_nasc || !senha){
+                
                 toast.warning("Para processegui é preciso preencher todos os campos")
                 return;
             }
@@ -101,7 +104,8 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
             data.append('file',imageAvatar )
             data.append('admissao',admissao)
             data.append('cpf', cpf)
-            data.append('senha','')
+            data.append('senha',senha)
+            data.append('dt_nascimento',dt_nasc)
 
             data.append('estrutura_id', estr[estrutSelecionado].id)
             data.append('cargo_id', carg[cargSelecionado].id)
@@ -121,6 +125,7 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
             setCargo('');
             setEstrutura('');
             setMatricula('');
+            setDate('');
             
 
         }catch(er){
@@ -193,6 +198,22 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                             className={styles.input}
                             value={cpf}
                             onChange = {(e) => setCPF(e.target.value)}
+                        />
+
+                        <input 
+                            type="text" 
+                            placeholder='Digite a data de nascimento'
+                            className={styles.input}
+                            value={dt_nasc}
+                            onChange = {(e) => setDate(e.target.value)}
+                        />
+
+                        <input 
+                            type="password" 
+                            placeholder='Digite a senha'
+                            className={styles.input}
+                            value={senha}
+                            onChange = {(e) => setSenha(e.target.value)}
                         />
 
                         <select className={styles.select} value={estrutSelecionado} onChange={handleEstr}>

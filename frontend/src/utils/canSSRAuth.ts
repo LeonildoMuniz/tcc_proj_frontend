@@ -10,6 +10,7 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>){
         const cookies = parseCookies(ctx);
         const token = cookies['@conectar.token'];
 
+
         if(!token){
             return{
                 redirect:{

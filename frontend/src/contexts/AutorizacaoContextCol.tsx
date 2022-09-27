@@ -18,6 +18,7 @@ type SignInProps = {
     senha: string;
 }
 
+
 type UserProps = {
     id: string;
     nome: string;
@@ -175,7 +176,7 @@ export function AuthProvider({children}:AuthProvaderProps){
     async function singUP({matricula,cpf,admissao,senha}:SignUpProps) {
 
         try{
-            const response = await api.post('/primeiroacesso',{
+            const response = await api.put('/primeiroacesso',{
                 matricula,
                 cpf,
                 admissao,
@@ -190,6 +191,7 @@ export function AuthProvider({children}:AuthProvaderProps){
             console.log("Erro ao efetuar o cadastro",err);
         }
     }
+
 
     return(
         <AuthContext.Provider value={ {user,autenticado,sigIn,sigInCol,signOut,singUP} }>

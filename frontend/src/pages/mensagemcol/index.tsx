@@ -11,6 +11,7 @@ import { api } from '../../services/apiClient'
 import{TbListSearch} from 'react-icons/tb'
 import { setupAPIClient } from '../../services/api'
 import { HeaderCol } from '../../components/HeaderCol'
+import Link from 'next/link'
 
 
 
@@ -77,9 +78,6 @@ export default function MensagemCol(){
         }
 
     }
-    function handleListar(e:FormEvent){
-
-    }
 
     return(
         <>
@@ -88,14 +86,9 @@ export default function MensagemCol(){
             </Head>
             <HeaderCol/>
             <header>
-                <form onSubmit={handleListar}>
-                    <button className={styles.buttonLocalize}>
-                        <span>
-                        <TbListSearch/> Listar Mensagens Enviadas
-                        </span>
-                    </button>
-                </form>
-
+                <Link href="/listarmensagem2">
+                    <a className={styles.text}> <TbListSearch/> Listar Mensagens</a>
+                </Link>
             </header>
                 <main className={styles.container} >
                     <h1>Cadastro de mensagens</h1>

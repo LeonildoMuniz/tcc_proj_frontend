@@ -3,15 +3,14 @@ import { canSSRAuth } from '../../utils/canSSRAuth'
 import Head from 'next/head';
 import styles from './styles.module.scss';
 import Modal from 'react-modal';
-import {parseCookies} from 'nookies'
 
+import { HeaderCol } from '../../components/HeaderCol'
 import { FiRefreshCcw } from 'react-icons/fi'
 
 import { setupAPIClient } from '../../services/api'
 import {ModalAdmin} from '../../components/ModalAdmin/Index'
 import { Header } from '../../components/Header/Index';
-
-
+import { AuthContext } from '../../contexts/AutorizacaoContextCol';
 
 
 
@@ -29,15 +28,12 @@ interface HomeProps{
 }
 
 
-
-
-export default function Mensagens({ mensagens }: HomeProps){
+export default function Mensagens2({ mensagens }: HomeProps){
 
   const [mensagemList, setMensagem] = useState(mensagens || [])
 
   const [modalItem, setModalItem] = useState<MensagensProps[]>();
   const [modalVisible, setModalVisible] = useState(false);
-
 
   function hadleCloseModal(){
     setModalVisible(false);
@@ -49,7 +45,7 @@ export default function Mensagens({ mensagens }: HomeProps){
   async function handleOpenModalView(id: string){
     const apiCliente = setupAPIClient();
 
-    const response = await apiCliente.get('/mensagem',{
+    const response = await apiCliente.get('/mensagemw',{
       params:{
         id:id
       }
@@ -107,33 +103,15 @@ Modal.setAppElement('#__next');
   )
 }
 
-
-
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiClient = setupAPIClient(ctx);
 
-  const cookies = parseCookies(ctx);
-  const token = cookies['@conectar.token'];
- 
 
-  const res = await apiClient.get('/userinfo2',{
-    params:{
-      Bearer: token
-    }
-  })
-
-  const {id} = res.data;
-
-  const response = await apiClient.get('/listamensagem',{
-    params:{
-      id:id
-    }
-  })
-
+  const response = await apiClient.get('/listamensagem2');
+  //console.log(response.data);
   return {
-    
     props: {
-      mensagens:response.data
+      mensagens: response.data
     }
   }
 })
