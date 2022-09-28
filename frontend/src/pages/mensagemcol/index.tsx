@@ -15,10 +15,6 @@ import Link from 'next/link'
 
 
 
-
-
-
-
 export default function MensagemCol(){
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setAvatar] = useState(null);

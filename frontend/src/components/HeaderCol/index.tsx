@@ -15,7 +15,7 @@ export function HeaderCol(){
                     <Image src={logo} alt="Logo sistema Conect@r" width={190} height={60}/>
                 </Link>
                 <nav className={styles.menuNav}>
-                    <Link href="../mensagens">
+                    <Link href="../mensagemcol">
                         <a>Mensagem</a>
                     </Link>
                     <button onClick={signOut}>

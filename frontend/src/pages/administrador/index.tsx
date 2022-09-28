@@ -47,6 +47,7 @@ const Administrador: NextPage = () => {
     <div className={styles.containerCenter}>
       <Image src={logo} alt="Logo sistema Conect@r"/>
       <div className={styles.login}>
+        <h2>Acesso Administrador</h2>
         <form onSubmit={handlogin}>
           <Input
           placeholder="Digite sua matricula"

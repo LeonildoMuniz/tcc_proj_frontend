@@ -48,6 +48,7 @@ const Home: NextPage = () => {
       <Image src={logo} alt="Logo sistema Conect@r"/>
       <div className={styles.login}>
         <form onSubmit={handlogin}>
+          <h2>Acesso ao Usuario</h2>
           <Input
           placeholder="Digite sua matricula"
           value={matricula}
