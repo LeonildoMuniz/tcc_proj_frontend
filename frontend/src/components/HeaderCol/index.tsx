@@ -11,7 +11,7 @@ export function HeaderCol(){
     return(
         <header className={styles.headerContainer}>
             <div className={styles.headerContent}>
-                <Link href="/">
+                <Link href="/mensagemcol">
                     <Image src={logo} alt="Logo sistema Conect@r" width={190} height={60}/>
                 </Link>
                 <nav className={styles.menuNav}>

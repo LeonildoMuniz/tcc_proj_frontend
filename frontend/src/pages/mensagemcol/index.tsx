@@ -9,7 +9,6 @@ import { toast } from 'react-toastify'
 import { AuthContext } from '../../contexts/AutorizacaoContextCol'
 import { api } from '../../services/apiClient'
 import{TbListSearch} from 'react-icons/tb'
-import { setupAPIClient } from '../../services/api'
 import { HeaderCol } from '../../components/HeaderCol'
 import Link from 'next/link'
 
@@ -38,7 +37,7 @@ export default function MensagemCol(){
         }
         setAvatarUrl(URL.createObjectURL(e.target.files[0]))
 
-        if(image.type == 'image/jpeg' || image.type == 'image/png' || image.type == 'application/pdf'){
+        if(image.type == 'image/jpeg' || image.type == 'image/png'){
             setAvatar(image);
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
         }
@@ -89,21 +88,6 @@ export default function MensagemCol(){
                 <main className={styles.container} >
                     <h1>Cadastro de mensagens</h1>
                     <form className={styles.form} onSubmit={handleCadastrar}>
-                        <label className={styles.label}>
-                            <span>
-                                <FiUpload size={25} color="var(--azul2)"/>
-                            </span>
-                            <input type="file" accept="image/jpeg, image/png, application/pdf" onChange={handleFile}/>
-                            {avatarUrl &&(
-                                <img 
-                                    className={styles.preview}
-                                    src={avatarUrl} 
-                                    alt="imagem arquivo"
-                                    width={250}
-                                    height={250}
-                                />
-                            )}
-                        </label>
 
                         <input 
                         type="text" 

@@ -42,7 +42,7 @@ export default function Mensagem(){
         }
         setAvatarUrl(URL.createObjectURL(e.target.files[0]))
 
-        if(image.type == 'image/jpeg' || image.type == 'image/png' || image.type == 'application/pdf'){
+        if(image.type == 'image/jpeg' || image.type == 'image/png'){
             setAvatar(image);
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
         }
@@ -97,7 +97,7 @@ export default function Mensagem(){
                             <span>
                                 <FiUpload size={25} color="var(--azul2)"/>
                             </span>
-                            <input type="file" accept="image/jpeg, image/png, application/pdf" onChange={handleFile}/>
+                            <input type="file" accept="image/jpeg, image/png" onChange={handleFile}/>
                             {avatarUrl &&(
                                 <img 
                                     className={styles.preview}
