@@ -13,11 +13,16 @@
     text-align: center;
 }
 
+.container h3{
+    color: white;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
 .form{
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
-
     textarea{
         width: 100%;
         min-height: 200px;
@@ -39,6 +44,7 @@
 
 }
 
+
 .button{
     height: 40px;
     border-radius: 0.5rem;
@@ -48,9 +54,11 @@
     color: white;
 }
 
+
 .label{
-    width: 100%;
-    height: 280px;
+    width: 200px;
+    height: 200px;
+    margin: auto;
     background-color: var(--cinza);
     margin-bottom: 1rem;
     border-radius: 0.5rem;
@@ -77,6 +85,7 @@
 .preview{
     object-fit: cover;
     border-radius: 0.3rem;
+    
 }
 
 .select{
@@ -87,4 +96,11 @@
     background-color: var(--cinza);
     border: 1px solid solid rgb(33, 25, 25);
     padding: 0 0.5rem;
+}
+
+
+.text{
+    color: white;
+    font-size: larger;
+    background-color: var(--azul);
 }

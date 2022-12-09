@@ -41,7 +41,7 @@ export function ModalUser({isOpen,onRequestClose,mensagem}:ModalPropos){
         }
         setAvatarUrl(URL.createObjectURL(e.target.files[0]))
 
-        if(image.type == 'image/jpeg' || image.type == 'image/png' || image.type == 'application/pdf'){
+        if(image.type == 'image/jpeg' || image.type == 'image/png'){
             setAvatar(image);
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
         }
@@ -63,7 +63,7 @@ export function ModalUser({isOpen,onRequestClose,mensagem}:ModalPropos){
     async function handleExcluir(id:string) {
         const apiCliente = setupAPIClient();
 
-        const response = await apiCliente.delete('/removeinfo',{
+        const response = await apiCliente.delete('/removeinfo2',{
             params:{
                 id:id
             }
@@ -147,22 +147,7 @@ export function ModalUser({isOpen,onRequestClose,mensagem}:ModalPropos){
                         value={newMensagem}
                         onChange = {(e) => setMensagem(e.target.value)}
                     />
-                    <label className={styles.label}>
-                                <span>
-                                    <FiUpload size={25} color="var(--azul2)"/>
-                                </span>
-                                <input type="file" accept="image/jpeg, image/png, application/pdf" onChange={handleFile}/>
-                                {avatarUrl &&(
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img 
-                                        className={styles.preview}
-                                        src={avatarUrl} 
-                                        alt="imagem arquivo"
-                                        width={150}
-                                        height={150}
-                                    />
-                                )}
-                            </label>
+
 
                     <div>
                         <button style={{background: 'transparent', border:0,marginLeft:'5rem'}} onClick={()=>handleExcluir(mensagem.id)} >

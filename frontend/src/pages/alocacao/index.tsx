@@ -71,6 +71,7 @@ export default function Unidade({estabelecimentolist}:EstabelecimentoProps){
             <main className={styles.container}>
                 <h1>Cadastro Centro de Custo</h1>
 
+                <h3>Selecione o estabelecimento para relacionar ao centro de custo</h3>
                 <form className={styles.form} onSubmit={hadleCadastrar}>
                     <select className={styles.select} value={estabSelecionado} onChange={handleCusto}>
                         {estabelecimentos.map( (item, index)=> {

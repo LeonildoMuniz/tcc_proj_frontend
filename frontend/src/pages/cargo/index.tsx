@@ -71,6 +71,8 @@ export default function Cargo({nivellist}:NivelProps){
             <Header/>
             <main className={styles.container}>
                 <h1>Cadastro Novo Cargo</h1>
+
+                <h3>Selecione o nível do cargo relacionar ao cargo</h3>
                 <form className={styles.form} onSubmit={hadleCadastrar}>
                     <select className={styles.select} value={nivelSelecionado} onChange={handleCusto}>
                         {niveis.map( (item, index)=> {

@@ -103,8 +103,8 @@ export default function Mensagem(){
                                     className={styles.preview}
                                     src={avatarUrl} 
                                     alt="imagem arquivo"
-                                    width={250}
-                                    height={250}
+                                    width={350}
+                                    height={350}
                                 />
                             )}
                         </label>

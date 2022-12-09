@@ -49,7 +49,7 @@ export default function Mensagens({ mensagens }: HomeProps){
   async function handleOpenModalView(id: string){
     const apiCliente = setupAPIClient();
 
-    const response = await apiCliente.get('/mensagem2',{
+    const response = await apiCliente.get('/mensagem',{
       params:{
         id:id
       }

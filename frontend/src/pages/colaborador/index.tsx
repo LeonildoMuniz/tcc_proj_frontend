@@ -5,13 +5,15 @@ import Head from 'next/head'
 import {Header} from '../../components/Header/Index'
 import {Footer} from '../../components/Footer/index'
 import styles from './styles.module.scss'
-import {FiUpload} from 'react-icons/fi'
+import {AiOutlineCamera} from 'react-icons/ai'
 import Image from 'next/image' 
 import { toast } from 'react-toastify'
 import { AuthContext } from '../../contexts/AutorizacaoContextCol'
 import { api } from '../../services/apiClient'
 import { setupAPIClient } from '../../services/api'
 import { type } from 'os'
+import Link from 'next/link'
+import { TbListSearch } from 'react-icons/tb'
 
 
 
@@ -56,6 +58,8 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
     const [estr, setEstr] = useState(estruturamentolist || []);
     const [estrutSelecionado,setSelecionado] = useState(0)
 
+
+
     const [carg, setCarg] = useState(cargolist || []);
     const [cargSelecionado,setSelecionadocarg] = useState(0)
 
@@ -97,21 +101,40 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                 toast.warning("Para processegui é preciso preencher todos os campos")
                 return;
             }
+            
+            
+
+            const admiss = new Date(admissao),
+                dia  = admiss.getDate().toString(),
+                diaF = (dia.length == 1) ? '0'+dia : dia,
+                mes  = (admiss.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+                mesF = (mes.length == 1) ? '0'+mes : mes,
+                anoF = admiss.getFullYear();
+            const admissNew = diaF+"/"+mesF+"/"+anoF
+
+            
+
+            const dtNas = new Date(dt_nasc),
+                dia2  = dtNas.getDate().toString(),
+                diaF2 = (dia2.length == 1) ? '0'+dia2 : dia2,
+                mes2  = (dtNas.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+                mesF2 = (mes2.length == 1) ? '0'+mes2 : mes2,
+                anoF2 = dtNas.getFullYear();
+            const dtNasNew = diaF2+"/"+mesF2+"/"+anoF2
 
 
             data.append('nome',nome);
             data.append('matricula',matricula)
             data.append('file',imageAvatar )
-            data.append('admissao',admissao)
+            data.append('admissao',admissNew)
             data.append('cpf', cpf)
             data.append('senha',senha)
-            data.append('dt_nascimento',dt_nasc)
+            data.append('dt_nascimento',dtNasNew)
 
             data.append('estrutura_id', estr[estrutSelecionado].id)
             data.append('cargo_id', carg[cargSelecionado].id)
             data.append('alocacao_id',aloc[alocSelecionado].id)
 
-            alert
 
             const response = await api.post('/colaborador',data)
 
@@ -120,6 +143,10 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
             setAvatar('');
             setAvatarUrl('');
             setNome('');
+            setMatricula('');
+            setCPF('')
+            setSenha('')
+            setEstrutura('');   
             setAdmissao('');
             setAlocacao('');
             setCargo('');
@@ -129,7 +156,7 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
             
 
         }catch(er){
-            toast.error("Erro ao cadastrar mensagem")
+            toast.error("Erro ao cadastrar colaborador")
         }
 
     }
@@ -152,13 +179,17 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                 <title>Cadastro de colaborador</title>
             </Head>
             <Header/>
+            <header>
+                <Link href="/listacolaborador">
+                    <a className={styles.text}> <TbListSearch/> Listar Colaboradores</a>
+                </Link>
+            </header>
                 <main className={styles.container} >
                     <h1>Cadastro de colaborador</h1>
-                    <form className={styles.form} onSubmit={handleCadastrar}>
-
+                    <form className={styles.form} onSubmit={handleCadastrar}>                 
                         <label className={styles.label}>
                             <span>
-                                <FiUpload size={25} color="var(--azul2)"/>
+                                <AiOutlineCamera size={25} color="var(--azul2)"/>
                             </span>
                             <input type="file" accept="image/jpeg, image/png" onChange={handleFile}/>
                             {avatarUrl &&(
@@ -166,12 +197,11 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                                     className={styles.preview}
                                     src={avatarUrl} 
                                     alt="imagem image"
-                                    width={250}
-                                    height={250}
+                                    width={125}
+                                    height={125}
                                 />
                             )}
                         </label>
-
                         <input 
                             type="text" 
                             placeholder='Digite o Nome'
@@ -185,9 +215,9 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                             value={matricula}
                             onChange = {(e) => setMatricula(e.target.value)}
                         />
-
+                        <h3>Data de Admissão</h3>
                         <input
-                            placeholder='Digite a data de admissão'
+                            type="datetime-local"
                             className={styles.input}
                             value={admissao}
                             onChange = {(e) => setAdmissao(e.target.value)}
@@ -200,8 +230,10 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                             onChange = {(e) => setCPF(e.target.value)}
                         />
 
+
+                        <h3>Data de Nascimento</h3>
                         <input 
-                            type="text" 
+                            type="datetime-local" 
                             placeholder='Digite a data de nascimento'
                             className={styles.input}
                             value={dt_nasc}
@@ -215,7 +247,7 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                             value={senha}
                             onChange = {(e) => setSenha(e.target.value)}
                         />
-
+                        <h3>Selecione a estrutura organizacional do colaborador</h3>
                         <select className={styles.select} value={estrutSelecionado} onChange={handleEstr}>
                             {estr.map( (item, index)=> {
                                 return(
@@ -225,7 +257,7 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                                 )
                             })}
                         </select>
-
+                        <h3>Selecione o cargo do colaborador</h3>
                         <select className={styles.select} value={cargSelecionado} onChange={handleCarg}>
                             {carg.map( (item, index)=> {
                                 return(
@@ -236,6 +268,7 @@ export default function Colaborador({estruturamentolist, alocacaolist, cargolist
                             })}
                         </select>
 
+                        <h3>Selecione o centro de custo de alocação do colaborador</h3>
                         <select className={styles.select} value={alocSelecionado} onChange={handleAloc}>
                             {aloc.map( (item, index)=> {
                                 return(

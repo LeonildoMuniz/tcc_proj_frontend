@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { canSSRAuth } from '../../utils/canSSRAuth'
 import Head from 'next/head';
 import styles from './styles.module.scss';
